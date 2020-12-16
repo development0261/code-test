@@ -127,7 +127,12 @@ class Community
     public function deletePost($id, $userId)
     {
       foreach ($this->posts as $post) {
+        $user = CommunityRepository::getUser($userId);
         if ($post->id == $id && $post->userid == $userId) {
+          if($user) {
+            $post->setDeleted(true);
+          }
+        } else if($user->getRoles() == 'Admin') {
           $post->setDeleted(true);
         }
       }
